@@ -154,14 +154,19 @@ export default {
     })
   },
   mounted () {
-    this.contents = this.mainBannerData;
+    setTimeout(() => {
+      this.contents = this.mainBannerData;
+    }, 200);
   },
   watch: {
-    contents () {
-      console.log('ctdfytcyc');
-        this.$store.dispatch('mainBannerData', this.contents);
+  contents: {
+    handler(newContents) {
+      this.$store.dispatch('mainBannerData', newContents);
+      localStorage.setItem('mainBannerData', JSON.stringify(newContents));
+    },
+    deep: true
     }
-  },
+    },
   methods: {
     addRow () {
       this.contents.push(

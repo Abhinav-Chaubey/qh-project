@@ -117,7 +117,7 @@
     <v-container>
       <v-row>
         <v-col cols="12" class="text-right pr-0">
-          <v-btn color="#498a3a" class="white--text custom-btn text-center cursor-pointer elevation-0" @click="addRow()">
+          <v-btn color="#498a3a" class="white--text custom-btn text-center cursor-pointer elevation-0" :disabled="contents.length >= 5" @click="addRow()">
             <span  class="am-table-sub-title-small" >Add row</span>
           </v-btn>
         </v-col>
@@ -147,18 +147,24 @@
       };
     },
     mounted () {
-    this.contents = this.bannerDataSettings;
-  },
+        setTimeout(() => {
+            this.contents = this.bannerDataSettings;
+        }, 200);
+    },
     computed: {
     ...mapState({
         bannerDataSettings: state => state.bannerDataSettings
     })
   },
   watch: {
-    contents () {
-        this.$store.dispatch('bannerDataSettings', this.contents);
+  contents: {
+    handler(newContents) {
+      this.$store.dispatch('bannerDataSettings', newContents);
+      localStorage.setItem('bannerDataSettings', JSON.stringify(newContents));
+    },
+    deep: true
     }
-  },
+    },
     methods: {
       addRow () {
         this.contents.push(
@@ -209,7 +215,7 @@
           
         }
       }
-    },
+},
   };
   </script>
   
